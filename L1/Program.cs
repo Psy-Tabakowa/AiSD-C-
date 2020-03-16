@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace L1
 {
@@ -7,42 +8,36 @@ namespace L1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            int[] tablica = new int[] { 4, 5, 6, 7, 8, 10 };
-            TableEnumerable<int> Enumerable = new TableEnumerable<int>(tablica);
-            //var va = Enumerable.GetEnumerator();
-            //var vas = va.Current;
-            //Console.WriteLine(vas);
-           // Console.WriteLine(default(TableEnumerable<int>) == null ? "null" : default(TableEnumerable<int>).ToString());
+            try
+            {
+                int[] tablica = new int[] { 4, 5, 6, 7, 8, 9, 10 };
+                TableEnumerable<int> Enumerable = new TableEnumerable<int>(tablica);
 
-            foreach (int item in Enumerable)
-            {
-                Console.WriteLine(item.ToString());
-            }
-            Console.WriteLine();
-            Console.WriteLine(Enumerable.Capacity);
-            Console.WriteLine(Enumerable.Length);
-            Console.WriteLine("----------------------------");
-            Enumerable.Add(3);
-            foreach (int item in Enumerable)
-            {
-                Console.WriteLine(item.ToString());
-            }
-            Console.WriteLine("----------------------------");
-            Enumerable.Remove(4);
-            foreach (int item in Enumerable)
-            {
-                Console.WriteLine(item.ToString());
-            }
-            Console.WriteLine();
-            Console.WriteLine(Enumerable.Capacity);
-            Console.WriteLine(Enumerable.Length);
-            Console.WriteLine("----------------------------");
+                Enumerable.Find((l) => l % 2 == 0).Foreach((l) => Console.WriteLine(l.ToString()));
 
-            Enumerable.Find((l) => l%2 == 0).Foreach((l) => Console.WriteLine(l.ToString()));
-            Console.WriteLine();
-            Console.WriteLine(Enumerable.Capacity);
-            Console.WriteLine(Enumerable.Length);
+                Console.WriteLine();
+                Console.WriteLine(Enumerable.Capacity);
+                Console.WriteLine(Enumerable.Length);
+                Console.WriteLine("------------------");
+
+                TableEnumerable<Object> jaks = new TableEnumerable<Object>();
+                jaks.Add((Object)1);
+                jaks.Add(null);
+                jaks.Add(null);
+                jaks.Add(null);
+                jaks.Add(Enumerable);
+                jaks.Foreach((l) => Console.WriteLine(l != null ? l.ToString() : "")); ;
+                //jaks.Remove(3);
+                jaks.EnsureCapacity(100);
+                Console.WriteLine(jaks.LastIndexOf(null));
+                Console.WriteLine(jaks.Length);
+                Console.WriteLine(jaks.Capacity);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Zastanów się dobrze, co chcesz zrobić");
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

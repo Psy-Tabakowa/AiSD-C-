@@ -20,6 +20,12 @@ namespace L1
             this.Table = table;
             this.Length = table.Length;
         }
+
+        public TableEnumerable()
+        {
+            this.Table = new T[] { };
+            this.Length = 0;
+        }
         public IEnumerator<T> GetEnumerator()
         {
             return new TableEnumerator<T>(this.Table, this.Length);
@@ -29,7 +35,6 @@ namespace L1
         {
             return this.GetEnumerator();
         }
-
 
         public void Add(int index, T item)
         {
@@ -63,18 +68,23 @@ namespace L1
             }
         }
 
+        public void Clear()
+        {
+            this.Clear(0, this.Length);
+        }
+
         public bool Contains(T item)
         {
             foreach(T t in this)
             {
-                if (t.Equals( item )) return true;
+                if (item != null && t.Equals( item ) || item == null && t == null) return true;
             }
             return false;
         }
 
         public void EnsureCapacity(int minCapacity)
         {
-            if(this.Table.Length < minCapacity)
+            while(this.Table.Length < minCapacity)
             {
                 T[] newTable = new T[this.Table.Length == 0 ? 2 : 2 * this.Table.Length];
                 int n = 0;
@@ -116,9 +126,24 @@ namespace L1
             int n = 0;
             for(IEnumerator<T> i=this.GetEnumerator(); i.MoveNext(); n++)
             {
-                if (i.Current.Equals(item)) index = n;
+                if (item != null && i.Current.Equals(item) || item == null && i.Current == null)
+                {
+                    index = n;
+                    break;
+                }
             }
             return index; 
+        }
+
+        public int LastIndexOf(T item)
+        {
+            int index = -1;
+            int n = 0;
+            for (IEnumerator<T> i = this.GetEnumerator(); i.MoveNext(); n++)
+            {
+                if (item != null && i.Current.Equals(item) || item == null && i.Current == null) index = n;
+            }
+            return index;
         }
 
         public void Set(int index, T item)
