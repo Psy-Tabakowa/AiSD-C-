@@ -6,19 +6,33 @@ namespace L2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            OneWayLinkedList<string> listaWiazana = new OneWayLinkedList<string>();
+            ExtendedOneWayLinkedListWithHead<string> listaWiazana = new ExtendedOneWayLinkedListWithHead<string>();
 
-            listaWiazana.Add("BAL");
+            listaWiazana.Add("text0");
+            listaWiazana.Add("text1");
             listaWiazana.Add(null);
-            listaWiazana.Add("BAL2");
+            listaWiazana.Add("text2");
 
-            listaWiazana.Remove(null);
 
-            foreach (string i in listaWiazana)
+            for (ListIterator<string> i  = listaWiazana.GetListIterator(); i.HasNext();)
             {
-                Console.WriteLine(i);
+                if(i.Next() == null)
+                {
+                    i.Previous();
+                    i.Set("Tu był null, ale go wytropiłem");
+                }
             }
+
+            ListIterator<string> iterator = listaWiazana.GetListIterator();
+            iterator.Index = listaWiazana.Count;
+            while(iterator.HasPrevious())
+            {
+                iterator.Previous();
+                if (listaWiazana[iterator.NextIndex()] == "text1") iterator.Remove();
+            }
+
+            for (ListIterator<string> i = listaWiazana.GetListIterator(); i.HasNext();)
+                Console.WriteLine(i.Next());
 
             Console.WriteLine(listaWiazana.IndexOf(null).ToString()) ;
         }

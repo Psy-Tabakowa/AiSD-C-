@@ -5,7 +5,7 @@ using System.Text;
 
 namespace L2
 {
-    class ExtendedOneWayLinkedListWithHead<T> : IList<T>
+    public class ExtendedOneWayLinkedListWithHead<T> : IList<T>
     {
         public OneWayLinkedList<T> InnerList = new OneWayLinkedList<T>();
         public T this[int index] { get { return InnerList[index]; } set { this.InnerList[index] = value; } }
@@ -31,12 +31,17 @@ namespace L2
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            this.InnerList.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             return this.InnerList.GetEnumerator();
+        }
+
+        public ListIterator<T> GetListIterator()
+        {
+            return new ListIterator<T>(this);
         }
 
         public int IndexOf(T item)
@@ -62,6 +67,86 @@ namespace L2
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+    }
+
+    public class ListIterator<T>
+    {
+        public int Index = 0;
+
+        public ExtendedOneWayLinkedListWithHead<T> List { get; set; }
+
+        public ListIterator(ExtendedOneWayLinkedListWithHead<T> lista)
+        {
+            this.List = lista;
+        }
+
+        public bool HasNext()
+        {
+            return (Index >= 0) && (Index < List.Count);
+        }
+        public T Next()
+        {
+            if (HasNext())
+            {
+                return List[Index++];
+            }
+            else throw new IndexOutOfRangeException();
+        }
+
+        public bool HasPrevious()
+        {
+            return (Index > 0) && (Index <= List.Count);
+        }
+        public T Previous()
+        {
+            if (HasPrevious())
+            {
+                Index--;
+                return List[Index];
+            }
+            else throw new IndexOutOfRangeException();
+        }
+
+        public int NextIndex()
+        {
+            if (HasNext())
+                return Index;
+            else
+                throw new IndexOutOfRangeException();
+        }
+
+        public int PreviousIndex()
+        {
+            if (HasPrevious())
+                return Index - 1;
+            else
+                throw new IndexOutOfRangeException();
+        }
+
+        public void Remove()
+        {
+            if (Index >= 0 && Index < this.List.Count)
+            {
+                this.List.RemoveAt(Index);
+            }
+            else
+                throw new IndexOutOfRangeException();
+        }
+
+        public void Set(T t)
+        {
+            if (Index >= 0 && Index < this.List.Count)
+            {
+                this.List[Index] = t;
+            }
+            else
+                throw new IndexOutOfRangeException();
+        }
+
+        public void Add(T t)
+        {
+            this.List.Insert(Index, t);
         }
     }
 }

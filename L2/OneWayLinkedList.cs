@@ -5,7 +5,7 @@ using System.Text;
 
 namespace L2
 {
-    class OneWayLinkedList<T> : IList<T>
+    public class OneWayLinkedList<T> : IList<T>
     {
         public T this[int index]
         {
