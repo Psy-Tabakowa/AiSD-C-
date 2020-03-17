@@ -111,11 +111,15 @@ namespace L2
             }
 
             Element<T> tail = Head;
-            while ( index-- > 0 && tail.Next != null)
+            while ( --index > 0 && tail.Next != null)
                 tail = tail.Next;
 
             if(tail != null)
+            {
+                newElem.Next = tail.Next;
                 tail.Next = newElem;
+            }
+                
         }
 
         public bool Remove(T item)

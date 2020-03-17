@@ -18,17 +18,18 @@ namespace L2
             {
                 if(i.Next() == null)
                 {
-                    i.Previous();
+                    
                     i.Set("Tu był null, ale go wytropiłem");
                 }
             }
 
             ListIterator<string> iterator = listaWiazana.GetListIterator();
-            iterator.Index = listaWiazana.Count;
+            iterator.Index = listaWiazana.Count-1;
             while(iterator.HasPrevious())
             {
+                
+                if (listaWiazana[iterator.PreviousIndex()] == "text1") iterator.Remove();
                 iterator.Previous();
-                if (listaWiazana[iterator.NextIndex()] == "text1") iterator.Remove();
             }
 
             for (ListIterator<string> i = listaWiazana.GetListIterator(); i.HasNext();)

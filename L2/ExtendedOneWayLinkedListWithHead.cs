@@ -72,7 +72,7 @@ namespace L2
 
     public class ListIterator<T>
     {
-        public int Index = 0;
+        public int Index = -1;
 
         public ExtendedOneWayLinkedListWithHead<T> List { get; set; }
 
@@ -83,27 +83,26 @@ namespace L2
 
         public bool HasNext()
         {
-            return (Index >= 0) && (Index < List.Count);
+            return (Index >= -1) && (Index < List.Count-1);
         }
         public T Next()
         {
             if (HasNext())
             {
-                return List[Index++];
+                return List[++Index];
             }
             else throw new IndexOutOfRangeException();
         }
 
         public bool HasPrevious()
         {
-            return (Index > 0) && (Index <= List.Count);
+            return (Index >= 0) && (Index < List.Count);
         }
         public T Previous()
         {
             if (HasPrevious())
             {
-                Index--;
-                return List[Index];
+                return List[Index--];
             }
             else throw new IndexOutOfRangeException();
         }
@@ -111,7 +110,7 @@ namespace L2
         public int NextIndex()
         {
             if (HasNext())
-                return Index;
+                return Index+1;
             else
                 throw new IndexOutOfRangeException();
         }
@@ -119,7 +118,7 @@ namespace L2
         public int PreviousIndex()
         {
             if (HasPrevious())
-                return Index - 1;
+                return Index ;
             else
                 throw new IndexOutOfRangeException();
         }
@@ -128,7 +127,7 @@ namespace L2
         {
             if (Index >= 0 && Index < this.List.Count)
             {
-                this.List.RemoveAt(Index);
+                this.List.RemoveAt(Index--);
             }
             else
                 throw new IndexOutOfRangeException();
@@ -146,7 +145,7 @@ namespace L2
 
         public void Add(T t)
         {
-            this.List.Insert(Index, t);
+            this.List.Insert(++Index, t);
         }
     }
 }
